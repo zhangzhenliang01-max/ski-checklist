@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1e6fd9">
+<title>单板刻滑前·基础自测</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;background:#f2f5f9;color:#1c2430;line-height:1.55;padding-bottom:40px}
+header{background:#1e6fd9;color:#fff;padding:18px 16px 14px;padding-top:max(18px,env(safe-area-inset-top))}
+header h1{margin:0;font-size:19px}
+header p{margin:6px 0 0;font-size:13px;opacity:.9}
+.wrap{padding:12px}
+.tip{background:#fff7e0;border:1px solid #f1d98a;border-radius:10px;padding:10px 12px;font-size:13px;margin-bottom:12px}
+.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.card h2{margin:0 0 6px;font-size:16px;display:flex;align-items:center;gap:8px}
+.num{background:#1e6fd9;color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;flex:none}
+.row{font-size:14px;margin:6px 0}
+.row b{color:#1e6fd9}
+.fix b{color:#d9531e}
+.btns{display:flex;gap:8px;margin-top:10px}
+.btns button{flex:1;padding:10px 0;border-radius:10px;border:1.5px solid #d5dbe4;background:#fff;font-size:14px;color:#445}
+.btns button.on.ok{background:#e3f6e8;border-color:#37b25c;color:#1f7a3b;font-weight:600}
+.btns button.on.bad{background:#fdeaea;border-color:#e0524d;color:#b02a25;font-weight:600}
+.sum{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sum h2{margin:0 0 6px;font-size:16px}
+.sum li{font-size:14px;margin:4px 0}
+.reset{display:block;margin:16px auto 0;padding:9px 20px;border:1px solid #c7ced8;background:#fff;border-radius:10px;font-size:13px;color:#667}
+.mini{font-size:12.5px;color:#667;margin-top:6px}
+h3{font-size:15px;margin:18px 4px 8px}
+</style>
+</head>
+<body>
+<header>
+<h1>🏂 单板刻滑前·基础自测</h1>
+<p>按 1→6 顺序测，哪步不稳就停在哪步多练，过关再往下</p>
+</header>
+<div class="wrap">
+<div class="tip">用法：选一条人少的绿道或最缓蓝道，每步测 2~3 次，点「✅ 过关」或「⚠️ 不稳」，记录会保存在本手机。全部过关后再练刻滑。</div>
+
+<div id="list"></div>
+
+<div class="sum" id="sum"></div>
+
+<h3>刻滑前还要有的基本感觉</h3>
+<div class="card">
+<div class="row">• 膝盖微弯，不站直</div>
+<div class="row">• 肩膀、髋部朝向前进方向，不扭着身体</div>
+<div class="row">• 眼睛看前方，不看板</div>
+</div>
+
+<h3>安全提醒</h3>
+<div class="card">
+<div class="row">• 护膝护臀戴好，头盔建议戴</div>
+<div class="row">• 摔倒时手别硬撑，尽量侧着、屈膝，减少手腕受伤</div>
+<div class="row">• 在雪道中间别停留，要停就靠边</div>
+<div class="row">• 累了就休息，下午体力下降时最容易受伤</div>
+<div class="mini">动作标准参考 AASI 初级教学顺序与国家体育总局单板大众技术等级，实际以现场教练指导为准。</div>
+</div>
+
+<button class="reset" onclick="resetAll()">清空记录</button>
+</div>
+
+<script>
+const STEPS=[
+{t:'后刃推坡',d:'脚后跟着地，板横着往下推',ok:'匀速往下推 10 米以上，板不抖、不突然加速',fix:'膝盖弯一点，脚跟压雪，用小腿控制刃的角度'},
+{t:'前刃推坡',d:'脚尖着地，板横着往下推（最常不稳）',ok:'同上，前刃也能匀速、不抖',fix:'膝盖往前压，别后仰，眼睛看前方，不要低头看板'},
+{t:'落叶飘（前刃、后刃各一遍）',d:'板头或板尾带一点方向，左右摆着往下',ok:'能左右摆动着往下，不是直冲',fix:'先推坡，再轻轻转前脚方向，慢慢加大幅度'},
+{t:'J 形转弯（前刃一次、后刃一次）',d:'滑出去后转向山上并停住',ok:'板自然转向山上并停稳',fix:'前脚带头，眼睛、肩膀先转，板跟着转'},
+{t:'连续转弯（S 弯）',d:'绿道或简单蓝道，前后刃连起来',ok:'连续转 5 个以上，速度稳，前后刃都顺',fix:'先去更缓的坡，前后刃交换时不要停顿'},
+{t:'急停',d:'任何时候想停就能停',ok:'3 秒内停住，不靠摔',fix:'板横过来，膝盖弯曲，刃刻进雪里停住'}
+];
+const KEY='ski_check_v1';
+let st=JSON.parse(localStorage.getItem(KEY)||'{}');
+function save(){localStorage.setItem(KEY,JSON.stringify(st))}
+function render(){
+ const el=document.getElementById('list');el.innerHTML='';
+ STEPS.forEach((s,i)=>{
+  const v=st[i];
+  const c=document.createElement('div');c.className='card';
+  c.innerHTML=`<h2><span class="num">${i+1}</span>${s.t}</h2>
+  <div class="row"><b>怎么测：</b>${s.d}</div>
+  <div class="row"><b>过关标准：</b>${s.ok}</div>
+  <div class="row fix"><b>不稳就练：</b>${s.fix}</div>
+  <div class="btns">
+   <button class="${v==='ok'?'on ok':''}" onclick="mark(${i},'ok')">✅ 过关</button>
+   <button class="${v==='bad'?'on bad':''}" onclick="mark(${i},'bad')">⚠️ 不稳</button>
+  </div>`;
+  el.appendChild(c);
+ });
+ const bad=[],un=[];
+ STEPS.forEach((s,i)=>{if(st[i]==='bad')bad.push(i);else if(!st[i])un.push(i)});
+ let h='<h2>测试结果</h2>';
+ if(bad.length){h+='<div style="font-size:14px;margin-bottom:4px">先练这些，过关再往下：</div><ul style="margin:0;padding-left:20px">'+bad.map(i=>`<li>第 ${i+1} 步：${STEPS[i].t}</li>`).join('')+'</ul>'}
+ else if(un.length){h+=`<div style="font-size:14px">还有 ${un.length} 步没测，按顺序继续吧。</div>`}
+ else{h+='<div style="font-size:14px">🎉 6 步全部过关，可以开始练刻滑了！</div>'}
+ document.getElementById('sum').innerHTML=h;
+}
+function mark(i,v){st[i]=(st[i]===v)?null:v;save();render()}
+function resetAll(){if(confirm('确定清空所有记录？')){st={};save();render()}}
+render();
+</script>
+</body>
+</html>
