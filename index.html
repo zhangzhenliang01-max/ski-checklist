@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#1e6fd9">
-<title>单板刻滑前·基础自测</title>
+<title>单板刻滑自测清单</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;background:#f2f5f9;color:#1c2430;line-height:1.55;padding-bottom:40px}
@@ -34,11 +34,11 @@ h3{font-size:15px;margin:18px 4px 8px}
 </head>
 <body>
 <header>
-<h1>🏂 单板刻滑前·基础自测</h1>
-<p>按 1→6 顺序测，哪步不稳就停在哪步多练，过关再往下</p>
+<h1>🏂 单板刻滑自测清单</h1>
+<p>按 1→8 顺序测，哪步不稳就停在哪步多练，过关再往下</p>
 </header>
 <div class="wrap">
-<div class="tip">用法：选一条人少的绿道或最缓蓝道，每步测 2~3 次，点「✅ 过关」或「⚠️ 不稳」，记录会保存在本手机。全部过关后再练刻滑。</div>
+<div class="tip">用法：选一条人少的绿道或最缓蓝道，每步测 2~3 次，点「✅ 过关」或「⚠️ 不稳」，记录会保存在本手机。前 7 步都稳了，再去练第 8 步刻滑入门。</div>
 
 <div id="list"></div>
 
@@ -70,7 +70,9 @@ const STEPS=[
 {t:'落叶飘（前刃、后刃各一遍）',d:'板头或板尾带一点方向，左右摆着往下',ok:'能左右摆动着往下，不是直冲',fix:'先推坡，再轻轻转前脚方向，慢慢加大幅度'},
 {t:'J 形转弯（前刃一次、后刃一次）',d:'滑出去后转向山上并停住',ok:'板自然转向山上并停稳',fix:'前脚带头，眼睛、肩膀先转，板跟着转'},
 {t:'连续转弯（S 弯）',d:'绿道或简单蓝道，前后刃连起来',ok:'连续转 5 个以上，速度稳，前后刃都顺',fix:'先去更缓的坡，前后刃交换时不要停顿'},
-{t:'急停',d:'任何时候想停就能停',ok:'3 秒内停住，不靠摔',fix:'板横过来，膝盖弯曲，刃刻进雪里停住'}
+{t:'急停',d:'任何时候想停就能停',ok:'3 秒内停住，不靠摔',fix:'板横过来，膝盖弯曲，刃刻进雪里停住'},
+{t:'换刃（含提前换刃）',d:'连续转弯时，转弯快结束、板还在滑时，就提前开始换到另一个刃',ok:'两个弯之间没有“顿一下”或硬直滑段，换刃是顺着滑过去的',fix:'先在缓坡练花环弯（每次多转一点）；眼睛、肩膀先看下一个弯；换刃时微微站起放松，转弯中再压低'},
+{t:'平行刻滑入门（目标）',d:'缓坡上让板刃切雪，而不是整块板侧滑',ok:'雪面留下两条细线，转弯干净，速度可控',fix:'重点是“倾倒”而不是“旋转”：膝盖朝转弯方向压，髋和肩朝前，别甩板'}
 ];
 const KEY='ski_check_v1';
 let st=JSON.parse(localStorage.getItem(KEY)||'{}');
@@ -95,7 +97,7 @@ function render(){
  let h='<h2>测试结果</h2>';
  if(bad.length){h+='<div style="font-size:14px;margin-bottom:4px">先练这些，过关再往下：</div><ul style="margin:0;padding-left:20px">'+bad.map(i=>`<li>第 ${i+1} 步：${STEPS[i].t}</li>`).join('')+'</ul>'}
  else if(un.length){h+=`<div style="font-size:14px">还有 ${un.length} 步没测，按顺序继续吧。</div>`}
- else{h+='<div style="font-size:14px">🎉 6 步全部过关，可以开始练刻滑了！</div>'}
+ else{h+='<div style="font-size:14px">🎉 全部过关，刻滑入门已经没问题，可以往大半径刻滑练了！</div>'}
  document.getElementById('sum').innerHTML=h;
 }
 function mark(i,v){st[i]=(st[i]===v)?null:v;save();render()}
